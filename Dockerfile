@@ -1,18 +1,20 @@
-# Usar uma imagem base do Node.js
+# Usar imagem base do Node.js
 FROM node:18
 
-# Criar diretório para o app
+# Definir o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copiar arquivos para o container
-COPY package*.json ./
+# Copiar os arquivos package.json e package-lock.json da pasta backend
+COPY backend/package*.json ./
+
+# Instalar as dependências
 RUN npm install
 
-# Copiar o restante do projeto
-COPY . .
+# Copiar o restante dos arquivos da pasta backend para o container
+COPY backend/ ./
 
-# Expor a porta usada no server.js
+# Expor a porta do servidor
 EXPOSE 3000
 
-# Comando para iniciar o app
+# Comando para iniciar o servidor
 CMD ["node", "server.js"]
