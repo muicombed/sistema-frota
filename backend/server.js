@@ -4,7 +4,7 @@ const path = require('path');
 const multer = require('multer'); // Importar o multer
 
 const app = express();
-const PORT = 3000;
+const PORT = 16432;
 
 // Configurar o multer para salvar os arquivos na pasta 'uploads' com nome único
 const storage = multer.diskStorage({
