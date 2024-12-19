@@ -2,11 +2,28 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer'); // Importar o multer
+const mysql = require('mysql2'); // Importar o mysql2
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Porta dinâmica para Railway
 
-const path = require('path');
+// Configuração do banco de dados
+const db = mysql.createConnection({
+    host: process.env.autorack.proxy.rlwy.net,       // Host do banco de dados
+    user: process.env.root,       // Usuário do banco de dados
+    password: process.env.ChPVoyOTVgbHOTskMLbqmPXjVafPRZQt, // Senha do banco de dados
+    database: process.env.railway, // Nome do banco de dados
+    port: process.env.16432        // Porta do banco de dados
+});
+
+// Conectar ao banco de dados
+db.connect((err) => {
+    if (err) {
+        console.error('Erro ao conectar ao banco de dados:', err);
+    } else {
+        console.log('Conectado ao banco de dados com sucesso!');
+    }
+});
 
 // Servir arquivos estáticos da pasta 'frontend'
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -15,7 +32,6 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
-
 
 // Configurar o multer para salvar os arquivos na pasta 'uploads' com nome único
 const storage = multer.diskStorage({
@@ -55,21 +71,29 @@ app.post('/api/checklists', upload.array('arquivos'), (req, res) => {
     // Suponha que você tenha outros campos como 'id_veiculo', 'observacoes', 'mecanico'
     const { id_veiculo, observacoes, mecanico } = req.body;
 
-    // Lógica para salvar os dados do checklist no banco (não mostrada aqui)
+    // Exemplo de lógica para salvar os dados no banco de dados
+    const query = 'INSERT INTO checklists (id_veiculo, observacoes, mecanico) VALUES (?, ?, ?)';
+    db.query(query, [id_veiculo, observacoes, mecanico], (err, results) => {
+        if (err) {
+            console.error('Erro ao salvar checklist:', err);
+            return res.status(500).json({ message: 'Erro ao salvar checklist!' });
+        }
 
-    // Responder com sucesso e os detalhes dos arquivos
-    res.json({
-        message: 'Checklist cadastrado com sucesso!',
-        arquivos: arquivos.map(arquivo => ({
-            filename: arquivo.filename,
-            path: `/uploads/${arquivo.filename}`,
-        })),
+        // Responder com sucesso e os detalhes dos arquivos
+        res.json({
+            message: 'Checklist cadastrado com sucesso!',
+            arquivos: arquivos.map(arquivo => ({
+                filename: arquivo.filename,
+                path: `/uploads/${arquivo.filename}`,
+            })),
+        });
     });
 });
 
 app.use('/api/veiculos', veiculosRoutes);
 app.use('/api/checklists', checklistRoutes);
 
+// Iniciar o servidor
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
