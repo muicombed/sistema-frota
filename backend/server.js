@@ -7,8 +7,13 @@ const app = express();
 const PORT = 3000;
 
 const path = require('path');
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Certifique-se de que 'index.html' está no diretório 'public'
+
+// Servir arquivos estáticos da pasta 'frontend'
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Para todas as outras rotas, envie o arquivo 'index.html'
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 
