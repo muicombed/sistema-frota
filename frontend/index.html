@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão de Frota</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Gestão de Frota</h1>
+        <nav>
+            <!-- Menu com opções -->
+            <button onclick="mostrarFormularioCadastroVeiculo()">Cadastrar Veículo</button>
+            <button onclick="mostrarFormularioChecklist()">Cadastrar Checklist</button>
+            <button onclick="mostrarChecklists()">Ver Checklists</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Formulário de Cadastro de Veículo -->
+        <section id="formulario-veiculo" style="display: none;">
+            <h2>Cadastrar Veículo</h2>
+            <label for="tipo">Tipo do Veículo:</label>
+            <input type="text" id="tipo" placeholder="Digite o tipo do veículo">
+
+            <label for="identificacao">Identificação:</label>
+            <input type="text" id="identificacao" placeholder="Digite a identificação">
+
+            <label for="placa">Placa:</label>
+            <input type="text" id="placa" placeholder="Digite a placa">
+
+            <button onclick="salvarVeiculo()">Salvar Veículo</button>
+        </section>
+
+        <!-- Formulário de Cadastro de Checklist -->
+        <section id="formulario-checklist" style="display: none;">
+            <h2>Cadastrar Checklist</h2>
+            <label for="id_veiculo">Veículo:</label>
+            <select id="id_veiculo"></select>
+
+            <label for="mecanico">Nome do Mecânico:</label>
+            <input type="text" id="mecanico" placeholder="Digite seu nome">
+
+            <label for="observacoes">Observações:</label>
+            <textarea id="observacoes" placeholder="Digite as observações..."></textarea>
+
+            <input type="file" id="arquivos" multiple accept="image/*, video/*">
+
+            <button onclick="salvarChecklist()">Salvar Checklist</button>
+        </section>
+
+        <!-- Seção de Visualização dos Checklists -->
+        <section id="checklists-section" style="display: none;">
+            <h2>Checklists Realizados</h2>
+            <label for="veiculo-select">Escolha o Veículo:</label>
+            <select id="veiculo-select" onchange="carregarChecklists()"></select>
+
+            <div id="checklists-container"></div>
+        </section>
+
+        <!-- Detalhes do Checklist -->
+        <section id="detalhes-checklist-section" style="display: none;">
+            <h2>Detalhes do Checklist</h2>
+            <div id="detalhes-checklist"></div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
