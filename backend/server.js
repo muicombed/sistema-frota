@@ -14,6 +14,7 @@ const db = mysql.createConnection({
     password: process.env.ChPVoyOTVgbHOTskMLbqmPXjVafPRZQt, // Senha do banco de dados
     database: process.env.railway, // Nome do banco de dados
     port: process.env.16432        // Porta do banco de dados
+    connectTimeout: 10000, // Aumenta o tempo limite para 10 segundos
 });
 
 // Conectar ao banco de dados
